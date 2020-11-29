@@ -66,10 +66,13 @@ def send_email(prices):
         msg = EmailMessage()
         msg.set_content(fp.read() + "\n" + prices)
 
-    sender = "sender_email"
-    psw = "your_psw"
-    receiver = "receiver-email"
-    msg['Subject'] = "Subject"
+    with open("login_data.txt") as login:
+        login_dict = ast.literal_eval(login.read())
+
+    sender = login_dict.get("email")
+    psw = login_dict.get("psw")
+    receiver = "eduard@rantsevich.net"
+    msg['Subject'] = "YEAH"
     msg['From'] = sender
     msg['To'] = receiver
     context = ssl.create_default_context()
@@ -90,9 +93,12 @@ def format_nicely(s):
     j = []
     for v in s:
         j.append("".join(v))
-    for v, s in enumerate(j):
+    for v, w in enumerate(j):
+        if not w:
+            del j[v]
+            continue
         k = ""
-        for b in s:
+        for b in w:
             if b.isdigit():
                 k += b
             elif b == ",":
@@ -108,6 +114,6 @@ if __name__ == "__main__":
     n = format_nicely(get_prices_by_xpath())
     for i in n:
         print(i, "€")
-    if n[0] < 300:
+    if n[0] < 350:
         print("sending email")
         send_email(n)
