@@ -71,7 +71,7 @@ def send_email(prices):
 
     sender = login_dict.get("email")
     psw = login_dict.get("psw")
-    receiver = "eduard@rantsevich.net"
+    receiver = login_dict.get("receiver")
     msg['Subject'] = "YEAH"
     msg['From'] = sender
     msg['To'] = receiver
